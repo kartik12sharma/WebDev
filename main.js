@@ -4,22 +4,43 @@ function MainModule(listingsID = "#listings") {
 
   const listingsElement = document.querySelector(listingsID);
 
+  function truncate(text, max = 150) {
+  return text.length > max ? text.slice(0, max) + "..." : text;
+}
+  
   function getListingCode(listing) {
+    const amenities = JSON.parse(listing.amenities)
+    .slice(0, 5)
+    .map(a => `<span class="badge bg-secondary me-1">${a}</span>`)
+    .join("");
+    
     return `<div class="col-4">
   <div class="listing card">
     <img
-      src="https://a0.muscache.com/pictures/b7c2a199-4c17-4ba6-b81d-751719d2dac6.jpg"
+      src=${listing.picture_url}
       class="card-img-top"
-      alt="AirBNB Listing"
+      alt=${listing.name}
     />
     <div class="card-body">
       <h2 class="card-title">${listing.name}</h2>
+      <div class="d-flex align-items-center mb-2">
+            <img
+              src="${listing.host_thumbnail_url}"
+              alt="${listing.host_name}"
+              class="rounded-circle me-2"
+              width="40"
+              height="40"
+            />
+            <small>Hosted by <strong>${listing.host_name}</strong></small>
+          </div>
       <div>${listing.price}</div>
       <p class="card-text">
-        Some quick example text to build on the card title and make up
-        the bulk of the card's content.
+        ${truncate(listing.description)}
       </p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      <p>
+        ${amenities}
+      </p>
+      <a href="#" class="btn btn-primary">Return To Top</a>
     </div>
   </div>
   <!-- /card -->
